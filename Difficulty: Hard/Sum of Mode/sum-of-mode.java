@@ -2,8 +2,25 @@ class Solution {
     /**
      * Approach : Using Sliding Window (Fixed Size) Approach
      * 
-     * TC: O(N x log(K))
+     * Intuition:
+     * - We want the mode (most frequent element) of every subarray of size K.
+     * - A sliding window helps us efficiently move across the array without recalculating everything.
+     * - HashMap tracks frequencies of elements.
+     * - TreeMap (with custom comparator) keeps elements sorted by:
+     *      1. Higher frequency first.
+     *      2. If frequencies tie → smaller element first.
+     * - At every window, the top entry of TreeMap gives us the current mode.
+     * - Add mode to sum, slide window, and update both maps.
+     * 
+     * Hint:
+     * - Use HashMap for quick frequency lookup.
+     * - Use TreeMap to quickly fetch "highest frequency + smallest element".
+     * - Remember: when sliding, carefully update both structures (remove old element, add new one).
+     * 
+     * TC: O(N x log(K)) 
+     *       because TreeMap insert/remove/search costs log(K).
      * SC: O(N + K)
+     *       for HashMap (N) and TreeMap (K).
      */
     public int sumOfModes(int[] arr, int k) {
         int n = arr.length;
