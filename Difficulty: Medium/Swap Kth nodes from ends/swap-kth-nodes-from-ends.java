@@ -12,9 +12,21 @@ class Node {
 class Solution {
     /**
      * Approach : Using Two Pointers Approach
-     * 
+     *
+     * Intuition:
+     * - The kth node from the start can be found by moving forward k steps.
+     * - The kth node from the end can be found by moving another pointer 
+     *   (slow) while the first pointer (fast) finishes the list.
+     * - Once both are found, swap their values.
+     *
+     * Hint:
+     * - Use two pointers to locate kth from start and kth from end.
+     * - Swap their data instead of restructuring the list.
+     *
      * TC: O(K) + O(N - K) = O(N)
+     *      (one traversal to reach kth start, another to reach kth end)
      * SC: O(1)
+     *      (just pointers, no extra space)
      */
     public Node swapKth(Node head, int k) {
         if (head == null || head.next == null) {
