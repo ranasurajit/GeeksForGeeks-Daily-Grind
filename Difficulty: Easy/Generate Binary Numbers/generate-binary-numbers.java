@@ -1,6 +1,6 @@
 class Solution {
     /**
-     * Approach : Using Bit-Manipulation Approach
+     * Approach II : Using Bit-Manipulation Approach
      * 
      * TC: O(N)
      * SC: O(1)
@@ -32,5 +32,24 @@ class Solution {
             }
         }
         return sb.toString().substring(startIdx);
+    }
+
+    /**
+     * Approach I : USing Queue + BFS Approach
+     * 
+     * TC: O(N x log(N))
+     * SC: O(N x log(N))
+     */
+    public ArrayList<String> generateBinaryUsingQueueBFS(int n) {
+        ArrayList<String> result = new ArrayList<String>();
+        Queue<String> queue = new LinkedList<String>(); // SC: O(N x log(N))
+        queue.offer("1");
+        for (int i = 1; i <= n; i++) { // TC: O(N x log(N))
+            String current = queue.poll();
+            result.add(current);
+            queue.offer(current + "0");
+            queue.offer(current + "1");
+        }
+        return result;
     }
 }
