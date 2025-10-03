@@ -26,7 +26,7 @@ class Solution {
     }
     
     /**
-     * Using Recursion Approach
+     * Using Recursion + Backtracking Approach
      * 
      * TC: O(4 ^ N)
      * SC: O(N) + O(N) ~ O(N)
