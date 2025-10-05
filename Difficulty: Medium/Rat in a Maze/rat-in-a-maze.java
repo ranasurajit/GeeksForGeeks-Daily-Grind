@@ -4,6 +4,14 @@ class Solution {
     private int m;
     private int n;
 
+    /**
+     * Approach : Using Recursion + Backtracking Approach
+     * 
+     * TC: O(4 ^ (M x N)) + O(K x log(K)) ~ O(4 ^ (M x N))
+     * SC: O(M x N)
+     * 
+     * where K is the number of paths
+     */
     public ArrayList<String> ratInMaze(int[][] maze) {
         this.m = maze.length;
         this.n = maze[0].length;
@@ -12,10 +20,16 @@ class Solution {
             return result;
         }
         solveRecursion(0, 0, new StringBuilder(), maze, result);
-        Collections.sort(result, (a, b) -> a.compareTo(b));
+        Collections.sort(result, (a, b) -> a.compareTo(b)); // TC: O(K x log(K))
         return result;
     }
     
+    /**
+     * Using Recursion + Backtracking Approach
+     * 
+     * TC: O(4 ^ (M x N))
+     * SC: O(M x N)
+     */
     private void solveRecursion(int r, int c, StringBuilder sb, int[][] maze, 
         ArrayList<String> result) {
         // Base Case
@@ -27,7 +41,7 @@ class Solution {
             return;
         }
         // Recursion Calls
-        for (int i = 0; i < directions.length; i++) {
+        for (int i = 0; i < directions.length; i++) { // TC: O(4)
             int effRow = r + directions[i][0];
             int effCol = c + directions[i][1];
             if (effRow >= 0 && effRow < m && effCol >= 0 && effCol < n && 
