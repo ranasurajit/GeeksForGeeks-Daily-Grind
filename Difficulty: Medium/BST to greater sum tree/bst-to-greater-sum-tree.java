@@ -12,12 +12,40 @@ class Node{
 
 class Solution {
     /**
-     * Approach : Using DFS (In-Order Traversal) Approach
+     * Approach II : Using DFS (Reverse In-Order Traversal) Approach (1 Pass Approach)
      * 
      * TC: O(N) + O(N) + O(N) ~ O(N)
      * SC: O(log(N)) + O(log(N)) + O(N) ~ O(N)
      */
     public static void transformTree(Node root) {
+        int[] suffixSum = { 0 };
+        dfsTreeReverseInorder(root, suffixSum);
+    }
+    
+    /**
+     * Using DFS (Reverse In-Order Traversal - Right Node Left Visits) Approach
+     * 
+     * TC: O(N)
+     * SC: O(log(N))
+     */
+    private static void dfsTreeReverseInorder(Node node, int[] suffixSum) {
+        if (node == null) {
+            return;
+        }
+        dfsTreeReverseInorder(node.right, suffixSum);
+        int original = node.data;
+        node.data = suffixSum[0];
+        suffixSum[0] += original;
+        dfsTreeReverseInorder(node.left, suffixSum);
+    }
+    
+    /**
+     * Approach I : Using DFS (In-Order Traversal) Approach (3 Pass Approach)
+     * 
+     * TC: O(N) + O(N) + O(N) ~ O(N)
+     * SC: O(log(N)) + O(log(N)) + O(N) ~ O(N)
+     */
+    public static void transformTreeBruteForce(Node root) {
         List<Integer> inorder = new ArrayList<Integer>();
         dfsTree(root, inorder); // TC: O(N), SC: O(log(N))
         int n = inorder.size();
