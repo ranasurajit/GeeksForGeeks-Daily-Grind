@@ -10,7 +10,7 @@ class Solution {
      * 
      * - O(N) - dp memory
      * 
-     * Accepted (1010 /1070 testcases passed)
+     * Accepted (1070 /1070 testcases passed)
      */
     public int LCIS(int[] a, int[] b) {
         this.m = a.length;
