@@ -3,7 +3,9 @@ class Solution {
      * Approach : Using Disjoint Set Union Find (DSU) Approach
      * 
      * TC: O(V) + O(2 x E x α(V)) + O(V) ~ O(E x α(V))
-     * SC: O(V) + O(V) + O(V) ~ O(V)
+     * SC: O(V) + O(V) + O(2 x log(V)) ~ O(V)
+     * 
+     * where α(V) is the Inverse Ackermann Function ~ almost constant
      */
     public int minConnect(int V, int[][] edges) {
         int[] parent = new int[V];    // SC: O(V)
@@ -14,8 +16,8 @@ class Solution {
         }
         int minEdgesNeeded = 0;
         for (int[] edge : edges) { // TC: O(E)
-            int parentU = find(parent,  edge[0]); // TC: O(α(V)), SC: O(V)
-            int parentV = find(parent, edge[1]);  // TC: O(α(V)), SC: O(V)
+            int parentU = find(parent,  edge[0]); // TC: O(α(V)), SC: O(log(V))
+            int parentV = find(parent, edge[1]);  // TC: O(α(V)), SC: O(log(V))
             if (parentU == parentV) {
                 continue;
             }
@@ -64,7 +66,7 @@ class Solution {
      * Using DSU - Find By Path Compression Approach
      * 
      * TC: O(α(V))
-     * SC: O(V)
+     * SC: O(log(V))
      */
     private int find(int[] parent, int x) {
         if (x == parent[x]) {
