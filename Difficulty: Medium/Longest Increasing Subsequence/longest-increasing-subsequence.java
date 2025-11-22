@@ -1,47 +1,79 @@
 class Solution {
     /**
-     * Approach : Using Binary Search Approach
+     * Approach II : Using Memoization Approach
+     *
+     * TC: O(N x N)
+     * SC: O(N x N) + O(N)
      * 
-     * TC: O(N x log(N))
-     * SC: O(N)
+     * Accepted (1111 / 1111 testcases passed)
      */
     static int lis(int arr[]) {
         int n = arr.length;
-        List<Integer> sorted = new ArrayList<Integer>(); // SC: O(N)
-        sorted.add(arr[0]);
-        for (int i = 1; i < n; i++) { // TC: O(N)
-            if (arr[i] > sorted.get(sorted.size() - 1)) {
-                sorted.add(arr[i]);
-            } else {
-                /**
-                 * here we need to find index where arr[i] can be 
-                 * set using Lower Bound (Binary Search)
-                 */
-                int idx = lowerBound(sorted, arr[i]); // TC: O(log(N))
-                sorted.set(idx, arr[i]);
-            }
+        int[][] memo = new int[n][n + 1]; // SC: O(N x N)
+        for (int[] mem : memo) {
+            Arrays.fill(mem, -1);
         }
-        return sorted.size();
+        return solveMemoization(0, -1, n, arr, memo);
     }
     
     /**
-     * Using Binary Search (sorted.get(i) >= num) Approach
-     * 
-     * TC: O(log(N))
-     * SC: O(1)
+     * Using Recursion Approach
+     *
+     * TC: O(N x N)
+     * SC: O(N)
      */
-    private static int lowerBound(List<Integer> sorted, int num) {
-        int low = 0;
-        int high = sorted.size() - 1;
-        while (low <= high) { // TC: O(log(N))
-            int mid = low + (high - low) / 2;
-            if (sorted.get(mid) >= num) {
-                // we need to go to left (shrink) to get minimum index
-                high = mid - 1;
-            } else {
-                low = mid + 1;
-            }
+    private static int solveMemoization(int idx, int prevIdx, int n, int[] nums, int[][] memo) {
+        // Base Case
+        if (idx == n) {
+            return 0;
         }
-        return low;
+        // Memoization Check
+        if (memo[idx][prevIdx + 1] != -1) {
+            return memo[idx][prevIdx + 1];
+        }
+        // Recursion Calls
+        // skip
+        int skip = solveMemoization(idx + 1, prevIdx, n, nums, memo);
+        // pick
+        int pick = 0;
+        if (prevIdx == -1 || nums[prevIdx] < nums[idx]) {
+            pick = 1 + solveMemoization(idx + 1, idx, n, nums, memo);
+        }
+        return memo[idx][prevIdx + 1] = Math.max(pick, skip);
+    }
+
+    /**
+     * Approach I : Using Recursion Approach
+     *
+     * TC: O(2 ^ N)
+     * SC: O(N)
+     * 
+     * Time Limit Exceeded (1010 / 1111 testcases passed)
+     */
+    static int lisRecursion(int arr[]) {
+        int n = arr.length;
+        return solveRecursion(0, -1, n, arr);
+    }
+    
+    /**
+     * Using Recursion Approach
+     *
+     * TC: O(2 ^ N)
+     * SC: O(N)
+     */
+    private static int solveRecursion(int idx, int prevIdx, int n, int[] nums) {
+        // Base Case
+        if (idx == n) {
+            return 0;
+        }
+        // Recursion Calls
+        // skip
+        int skip = solveRecursion(idx + 1, prevIdx, n, nums);
+        // pick
+        int pick = 0;
+        if (prevIdx == -1 || nums[prevIdx] < nums[idx]) {
+            pick = 1 + solveRecursion(idx + 1, idx, n, nums);
+        }
+        return Math.max(pick, skip);
     }
 }
