@@ -1,6 +1,74 @@
 
 class Solution {
     /**
+     * Approach IV : Using Space Optimization Approach
+     * 
+     * TC: O(N x N)
+     * SC: O(N) + O(N) + O(N) ~ O(N)
+     * - O(N) - current, next1 and next2 array memory
+     * 
+     * Accepted (1115 / 1115 testcases passed)
+     */
+    public int maximumAmount(int arr[]) {
+        int n = arr.length;
+        // Initialization
+        int[] next2 = new int[n]; // SC: O(N)
+        int[] next1 = new int[n]; // SC: O(N)
+        // Iterative Calls
+        for (int i = n - 1; i >= 0; i--) {
+            int[] current = new int[n]; // SC: O(N)
+            for (int j = i; j < n; j++) {
+                if (i == j) {
+                    current[j] = arr[i];
+                    continue;
+                }
+                int leftSelection = arr[i] + Math.min(
+                    (i + 2 <= j) ? next2[j] : 0, // opponent picks leftt
+                    (i + 1 <= j - 1) ? next1[j - 1] : 0); // opponent picks right
+                int rightSelection = arr[j] + Math.min(
+                    (i + 1 <= j - 1) ? next1[j - 1] : 0, // opponent picks left
+                    (i <= j - 2) ? current[j - 2] : 0); // opponent picks right
+                current[j] = Math.max(leftSelection, rightSelection);
+            }
+            next2 = next1;
+            next1 = current;
+        }
+        return next1[n - 1];
+    }
+
+    /**
+     * Approach III : Using Tabulation Approach
+     * 
+     * TC: O(N x N)
+     * SC: O(N x N)
+     * - O(N x N) - dp array memory
+     * 
+     * Accepted (1115 / 1115 testcases passed)
+     */
+    public int maximumAmountTabulation(int arr[]) {
+        int n = arr.length;
+        // Initialization
+        int[][] dp = new int[n][n]; // SC: O(N x N)
+        // Iterative Calls
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+                if (i == j) {
+                    dp[i][j] = arr[i];
+                    continue;
+                }
+                int leftSelection = arr[i] + Math.min(
+                    (i + 2 <= j) ? dp[i + 2][j] : 0, // opponent picks leftt
+                    (i + 1 <= j - 1) ? dp[i + 1][j - 1] : 0); // opponent picks right
+                int rightSelection = arr[j] + Math.min(
+                    (i + 1 <= j - 1) ? dp[i + 1][j - 1] : 0, // opponent picks left
+                    (i <= j - 2) ? dp[i][j - 2] : 0); // opponent picks right
+                dp[i][j] = Math.max(leftSelection, rightSelection);
+            }
+        }
+        return dp[0][n - 1];
+    }
+
+    /**
      * Approach II : Using Memoization Approach
      * 
      * TC: O(N x N)
@@ -10,9 +78,9 @@ class Solution {
      * 
      * Accepted (1115 / 1115 testcases passed)
      */
-    public int maximumAmount(int arr[]) {
+    public int maximumAmountMemoization(int arr[]) {
         int n = arr.length;
-        int[][] memo = new int[n][n];
+        int[][] memo = new int[n][n]; // SC: O(N x N)
         for (int[] mem : memo) {
             Arrays.fill(mem, -1);
         }
