@@ -1,6 +1,6 @@
 class Solution {
     /**
-     * Approach : Using Array Simulation Approach
+     * Approach : Using 2-D Array Simulation Approach
      * 
      * TC: O(N)
      * SC: O(1)
