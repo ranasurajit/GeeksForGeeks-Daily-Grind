@@ -52,7 +52,7 @@ class Solution {
             current.next = newNode;
         }
         Node head = reverseLL(dummy.next); // TC: O(Max(M, N))
-        while (head.data == 0) {
+        while (head.next != null && head.data == 0) {
             // removing leading zeroes
             head = head.next;
         }
