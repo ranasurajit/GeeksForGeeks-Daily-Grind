@@ -12,12 +12,28 @@ class Node {
 
 class Solution {
     /**
-     * Approach : Using Two Pointers Approach
+     * Approach II : Using Two Pointers (Clean Approach) Approach
      * 
      * TC: O(N + M)
      * SC: O(1)
      */
     public Node intersectPoint(Node head1, Node head2) {
+        Node curr1 = head1;
+        Node curr2 = head2;
+        while (curr1 != curr2) { // TC: O(2 x (N + M))
+            curr1 = curr1 == null ? head2 : curr1.next;
+            curr2 = curr2 == null ? head1 : curr2.next;
+        }
+        return curr1;
+    }
+
+    /**
+     * Approach I : Using Two Pointers Approach
+     * 
+     * TC: O(N + M)
+     * SC: O(1)
+     */
+    public Node intersectPointTwoPointers(Node head1, Node head2) {
         Node curr1 = head1;
         Node curr2 = head2;
         while (curr1 != null || curr2 != null) { // TC: O(2 x (N + M))
