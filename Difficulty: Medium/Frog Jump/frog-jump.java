@@ -4,8 +4,8 @@ class Solution {
      * 
      * TC: O(N)
      * SC: O(N) + O(N)
-     * - O(N) - memoization memory
-     * - O(N) - recursion stack
+     * O(N) - memoization memory
+     * O(N) - recursion stack space
      * 
      * Accepted (1115 / 1115 testcases passed)
      */
@@ -13,18 +13,18 @@ class Solution {
         int n = height.length;
         int[] memo = new int[n]; // SC: O(N)
         Arrays.fill(memo, -1);
-        return solveMemoization(n - 1, height, memo); // TC: O(N), SC: O(N)
+        return solveMemoization(height, n - 1, memo);
     }
-    
+
     /**
      * Using Memoization Approach
      * 
      * TC: O(N)
-     * SC: O(N)
+     * SC: O(N) - recursion stack space
      */
-    private int solveMemoization(int idx, int[] height, int[] memo) {
+    private int solveMemoization(int[] height, int idx, int[] memo) {
         // Base Case
-        if (idx <= 0) {
+        if (idx == 0) {
             return 0;
         }
         // Memoization Check
@@ -32,55 +32,67 @@ class Solution {
             return memo[idx];
         }
         // Recursion Calls
-        int oneStepCost = Integer.MAX_VALUE;
+        /**
+         * To reach ith stair, frog would have jumped from 
+         * (i - 1)th stair or (i - 2)th stair. so minimum ways 
+         * = Min(ways to reach ith stair from (i - 1)th stair,
+         * ways to reach ith stair from (i - 2)th stair)
+         */
+        int oneStepWays = Integer.MAX_VALUE;
+        int twoStepWays = Integer.MAX_VALUE;
         if (idx > 0) {
-            oneStepCost = Math.abs(height[idx] - height[idx - 1]) + 
-                solveMemoization(idx - 1, height, memo);
+            oneStepWays = Math.abs(height[idx] - height[idx - 1]) + 
+                solveMemoization(height, idx - 1, memo);
         }
-        int twoStepCost = Integer.MAX_VALUE;
         if (idx > 1) {
-            twoStepCost = Math.abs(height[idx] - height[idx - 2]) + 
-                solveMemoization(idx - 2, height, memo);
+            twoStepWays = Math.abs(height[idx] - height[idx - 2]) +
+                solveMemoization(height, idx - 2, memo);
         }
-        return memo[idx] = Math.min(oneStepCost, twoStepCost);
+        return memo[idx] = Math.min(oneStepWays, twoStepWays);
     }
-    
+
     /**
      * Approach I : Using Recursion Approach
      * 
      * TC: O(2 ^ N)
      * SC: O(N)
-     * - O(N) - recursion stack
+     * O(N) - recursion stack space
      * 
      * Time Limit Exceeded (1010 / 1115 testcases passed)
      */
     int minCostRecursion(int[] height) {
         int n = height.length;
-        return solveRecursion(n - 1, height); // TC: O(2 ^ N), SC: O(N)
+        return solveRecursion(height, n - 1);
     }
-    
+
     /**
      * Using Recursion Approach
      * 
      * TC: O(2 ^ N)
      * SC: O(N)
      */
-    private int solveRecursion(int idx, int[] height) {
+    private int solveRecursion(int[] height, int idx) {
         // Base Case
-        if (idx <= 0) {
+        if (idx == 0) {
             return 0;
         }
         // Recursion Calls
-        int oneStepCost = Integer.MAX_VALUE;
+        /**
+         * To reach ith stair, frog would have jumped from 
+         * (i - 1)th stair or (i - 2)th stair. so minimum ways 
+         * = Min(ways to reach ith stair from (i - 1)th stair,
+         * ways to reach ith stair from (i - 2)th stair)
+         */
+        int oneStepWays = Integer.MAX_VALUE;
+        int twoStepWays = Integer.MAX_VALUE;
         if (idx > 0) {
-            oneStepCost = Math.abs(height[idx] - height[idx - 1]) + 
-                solveRecursion(idx - 1, height);
+            oneStepWays = Math.abs(height[idx] - height[idx - 1]) + 
+                solveRecursion(height, idx - 1);
         }
-        int twoStepCost = Integer.MAX_VALUE;
         if (idx > 1) {
-            twoStepCost = Math.abs(height[idx] - height[idx - 2]) + 
-                solveRecursion(idx - 2, height);
+            twoStepWays = Math.abs(height[idx] - height[idx - 2]) +
+                solveRecursion(height, idx - 2);
         }
-        return Math.min(oneStepCost, twoStepCost);
+        return Math.min(oneStepWays, twoStepWays);
     }
 }
