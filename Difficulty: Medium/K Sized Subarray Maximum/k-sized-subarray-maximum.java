@@ -1,6 +1,6 @@
 class Solution {
     /**
-     * Approach : Using Sliding Window (Fixed Size) Approach
+     * Approach : Using Sliding Window (Fixed Size) + Monotonic Deque Approach
      * 
      * TC: O(N)
      * SC: O(K)
