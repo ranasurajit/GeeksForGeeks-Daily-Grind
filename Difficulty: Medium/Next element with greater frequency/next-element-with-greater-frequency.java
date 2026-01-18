@@ -1,6 +1,6 @@
 class Solution {
     /**
-     * Approach : Using Monotonic Stack Approach
+     * Approach  : Using Monotonic Stack Approach
      * 
      * TC: O(N) + O(N) + O(N) ~ O(N)
      * SC: O(N) + O(N) + O(N) ~ O(N)
@@ -12,13 +12,13 @@ class Solution {
             freqMap.put(x, freqMap.getOrDefault(x, 0) + 1);
         }
         int[] result = new int[n]; // SC: O(N)
-        Stack<int[]> st = new Stack<int[]>(); // SC: O(N)
+        Stack<Integer> st = new Stack<Integer>(); // SC: O(N)
         for (int i = n - 1; i >= 0; i--) { // TC: O(N)
-            while (!st.isEmpty() && st.peek()[1] <= freqMap.get(arr[i])) {
+            while (!st.isEmpty() && freqMap.get(st.peek()) <= freqMap.get(arr[i])) {
                 st.pop();
             }
-            result[i] = st.isEmpty() ? -1 : st.peek()[0];
-            st.push(new int[] { arr[i], freqMap.get(arr[i]) });
+            result[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(arr[i]);
         }
         ArrayList<Integer> nfg = new ArrayList<Integer>();
         for (int i = 0; i < n; i++) { // TC: O(N)
