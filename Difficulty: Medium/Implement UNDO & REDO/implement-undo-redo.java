@@ -10,7 +10,6 @@ class Solution {
     private StringBuilder sb = new StringBuilder(); // SC: O(N)
     private Stack<Character> undoSt = new Stack<Character>(); // SC: O(N)
     private Stack<Character> redoSt = new Stack<Character>(); // SC: O(N)
-    private int n = 0;
 
     /**
      * Using Stack + String Simulation Approach
@@ -19,9 +18,9 @@ class Solution {
      * SC: O(1)
      */
     public void append(char x) {
-        redoSt.push(x);
+        undoSt.push(x); // push to undo stack
+        redoSt.clear(); // clear history
         sb.append(x);
-        n++;
     }
 
     /**
@@ -31,10 +30,12 @@ class Solution {
      * SC: O(1)
      */
     public void undo() {
-        char delChar = sb.charAt(n - 1);
-        sb.deleteCharAt(n - 1);
-        undoSt.push(delChar);
-        n--;
+        if (undoSt.isEmpty()) {
+            return;
+        }
+        char delChar = undoSt.pop();
+        sb.deleteCharAt(sb.length() - 1);
+        redoSt.push(delChar);
     }
 
     /**
@@ -44,13 +45,12 @@ class Solution {
      * SC: O(1)
      */
     public void redo() {
-        if (undoSt.isEmpty()) {
+        if (redoSt.isEmpty()) {
             return;
         }
-        char redoChar = undoSt.pop();
+        char redoChar = redoSt.pop();
         sb.append(redoChar);
-        redoSt.push(redoChar);
-        n++;
+        undoSt.push(redoChar);
     }
 
     /**
