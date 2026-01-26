@@ -7,7 +7,10 @@ class Solution {
      * Approach : Using Backtracking Approach
      * 
      * TC: O(N x M x (3 ^ L))
-     * SC: O(N x M x L)
+     * SC: O(L)
+     * 
+     * from every cell we go to 3 directions 
+     * (1 direction is negated as we came from that)
      * 
      * where L = size(word)
      */
