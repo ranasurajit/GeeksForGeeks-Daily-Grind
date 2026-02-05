@@ -2,16 +2,16 @@ class Solution {
     /**
      * Approach II : Using Optimal (Three Pointers) Approach
      * 
-     * TC: O(N)
-     * SC: O(1)
+     * TC: O(N x log(N)) + O(N) ~ O(N x log(N))
+     * SC: O(N)
      * 
-     * Time Limit Exceeded (10 / 1115 testcases passed)
+     * Accepted (1115 / 1115 testcases passed)
      */
     int[] smallestDiff(int a[], int b[], int c[]) {
         int n = a.length;
-        Arrays.sort(a);
-        Arrays.sort(b);
-        Arrays.sort(c);
+        Arrays.sort(a); // TC: O(N x log(N))
+        Arrays.sort(b); // TC: O(N x log(N))
+        Arrays.sort(c); // TC: O(N x log(N))
         /**
          * we will keep three pointers p, q and r all at 
          * index zero of respective arrays a, b and c
@@ -21,12 +21,23 @@ class Solution {
         int r = 0;
         int minDiff = Integer.MAX_VALUE;
         int[] result = new int[3];
+        /**
+         * we will store the { minDiff, sum of triplet } in map 
+         * so that whene there is a tie with minDiff, we can 
+         * return the triplet with least sum
+         */
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>(); // SC: O(N)
         while (p < n && q < n && r < n) { // TC: O(N)
             int minVal = Math.min(a[p], Math.min(b[q], c[r]));
             int maxVal = Math.max(a[p], Math.max(b[q], c[r]));
             int diff = maxVal - minVal;
             if (diff < minDiff) {
                 minDiff = diff;
+                result[0] = a[p];
+                result[1] = b[q];
+                result[2] = c[r];
+                map.put(diff, a[p] + b[q] + c[r]);
+            } else if (diff == minDiff && map.get(diff) > a[p] + b[q] + c[r]) {
                 result[0] = a[p];
                 result[1] = b[q];
                 result[2] = c[r];
@@ -57,6 +68,11 @@ class Solution {
         int n = a.length;
         int minDiff = Integer.MAX_VALUE;
         int[] result = new int[3];
+        /**
+         * we will store the { minDiff, sum of triplet } in map 
+         * so that whene there is a tie with minDiff, we can 
+         * return the triplet with least sum
+         */
         Map<Integer, Integer> map = new HashMap<Integer, Integer>(); // SC: O(N)
         for (int i = 0; i < n; i++) {         // TC: O(N)
             for (int j = 0; j < n; j++) {     // TC: O(N)
