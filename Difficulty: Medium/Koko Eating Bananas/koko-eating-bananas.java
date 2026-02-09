@@ -5,7 +5,7 @@ class Solution {
      * TC: O(N x log(R)) + O(N) ~ O(N x log(R))
      * SC: O(1)
      * 
-     * where R = Sum(arr)
+     * where R = Max(arr)
      */
     public int kokoEat(int[] arr, int k) {
         int n = arr.length;
@@ -36,7 +36,7 @@ class Solution {
         long time = 0;
         int i = 0;
         while (i < n) { // TC: O(N)
-            time += (arr[i] + speed - 1) / speed;
+            time += (arr[i] / speed) + (arr[i] % speed == 0 ? 0 : 1);
             i++;
         }
         return time;
