@@ -5,7 +5,7 @@ class Solution {
      * TC: O(N) + O(N x log(R)) ~ O(N x log(R))
      * SC: O(N)
      * 
-     * where R = Max(arr) - Min(arr)
+     * where R = (Max(arr) + K) - Min(arr)
      */
     public int maxMinHeight(int[] arr, int k, int w) {
         int n = arr.length;
@@ -15,7 +15,7 @@ class Solution {
             low = Math.min(low, arr[i]);
             high = Math.max(high, arr[i]);
         }
-        high += k; // for (k increments)
+        high += k; // for (k increments as for k days we need to water the plants)
         while (low <= high) { // TC: O(log(R))
             int mid = low + (high - low) / 2;
             int daysNeeded = daysNeededToAchieveHeight(arr, n, w, mid); // TC: O(N), SC: O(N)
