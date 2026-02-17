@@ -7,6 +7,15 @@ class Solution {
      * SC: O(N)
      */
     public static int overlapInt(int[][] arr) {
+        /**
+         * Intuition: We need to consider this as a timeline and we need
+         * a sorted data structure that supports { key, value } pairs so
+         * we need a Sorted HashMap i.e. a TreeMap and we can proceed 
+         * solving this using Sweep Line Algorithm
+         * 
+         * (array instead of TreeMap is not so feasible as it might have
+         * multiple spaces left unused and is data dependant)
+         */
         TreeMap<Integer, Integer> sweepMap = new TreeMap<Integer, Integer>(); // SC: O(N)
         for (int[] interval : arr) { // TC: O(N)
             int start = interval[0];
