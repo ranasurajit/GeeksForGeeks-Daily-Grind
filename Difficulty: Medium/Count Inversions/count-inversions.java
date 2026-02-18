@@ -9,25 +9,28 @@ class Solution {
      */
     static int inversionCount(int arr[]) {
         int n = arr.length;
-        int[] count = { 0 };
-        mergeSort(arr, 0, n - 1, count); // TC: O(N x log(N)), SC: O(N)
-        return count[0];
+        int low = 0;
+        int high = n - 1;
+        return (int) mergeSort(arr, low, high); // TC: O(N x log(N))
     }
-    
+
     /**
      * Using Merge-Sort Approach
      * 
-     * TC: O(N x log(N))
+     * TC: O(N x log(N)) + O(2 x log(N)) ~ O(N x log(N))
      * SC: O(N)
      */
-    private static void mergeSort(int[] arr, int low, int high, int[] count) {
+    private static long mergeSort(int[] arr, int low, int high) {
         if (low >= high) {
-            return;
+            return 0L;
         }
         int mid = low + (high - low) / 2;
-        mergeSort(arr, low, mid, count);      // TC: O(log(N))
-        mergeSort(arr, mid + 1, high, count); // TC: O(log(N))
-        mergeSortedArrays(arr, low, mid, high, count); // TC: O(N x log(N)), SC: O(N)
+        long count = 0L;
+        count += mergeSort(arr, low, mid);                 // TC: O(log(N))
+        count += mergeSort(arr, mid + 1, high);            // TC: O(log(N))
+        count += 
+            mergeSortedArrays(arr, low, mid, high); // TC: O(N x log(N)), SC: O(N)
+        return count;
     }
     
     /**
@@ -36,18 +39,19 @@ class Solution {
      * TC: O(N x log(N))
      * SC: O(N)
      */
-    private static void mergeSortedArrays(int[] arr, int low, int mid, int high, int[] count) {
-        ArrayList<Integer> temp = new ArrayList<Integer>();
+    private static long mergeSortedArrays(int[] arr, int low, int mid, int high) {
+        List<Integer> temp = new ArrayList<Integer>();
         int left = low;
         int right = mid + 1;
+        long count = 0L;
         while (left <= mid && right <= high) {
             if (arr[left] <= arr[right]) {
                 temp.add(arr[left]);
                 left++;
             } else {
                 temp.add(arr[right]);
+                count += (mid - left + 1);
                 right++;
-                count[0] += (mid - left + 1);
             }
         }
         while (left <= mid) {
@@ -58,9 +62,10 @@ class Solution {
             temp.add(arr[right]);
             right++;
         }
-        for (int p = low; p <= high; p++) {
-            arr[p] = temp.get(p - low);
+        for (int i = low; i <= high; i++) {
+            arr[i] = temp.get(i - low);
         }
+        return count;
     }
 
     /**
