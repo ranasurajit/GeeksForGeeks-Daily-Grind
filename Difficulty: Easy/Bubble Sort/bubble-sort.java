@@ -7,20 +7,18 @@ class Solution {
      */
     public void bubbleSort(int[] arr) {
         int n = arr.length;
-        for (int i = 0; i < n; i++) {             // TC: O(N)
-            // in this sorting approach always the last element is sorted
-            boolean hasSwapped = false;
-            for (int j = 0; j < n - i - 1; j++) { // TC: O(N)
+        /**
+         * Idea: We compare adjacent elements and 
+         * move the maximum element at the last
+         */
+        for (int i = 0; i < n - 1; i++) {         // TC: O(N)
+            for (int j = 0; j < n - 1 - i; j++) { // TC: O(N)
                 if (arr[j] > arr[j + 1]) {
-                    hasSwapped = true;
-                    // swapping adjacent elements 
-                    int temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
+                    // swap elements arr[j] and arr[j + 1]
+                    int temp = arr[j + 1];
+                    arr[j + 1] = arr[j];
+                    arr[j] = temp;
                 }
-            }
-            if (!hasSwapped) {
-                return;
             }
         }
     }
