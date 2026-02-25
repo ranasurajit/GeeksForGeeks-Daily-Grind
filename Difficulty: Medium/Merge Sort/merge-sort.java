@@ -1,20 +1,23 @@
 class Solution {
     /**
-     * Approach : Using Merge Sorting Approach
+     * Approach : Using Merge Sort (Divide and Conquer) Approach
      * 
      * TC: O(N x log(N))
      * SC: O(N) + O(log(N))
-     *  - O(N) - temp array memory
-     *  - O(log(N)) - recursion stack
+     * - O(N) - temp array memory
+     * - O(log(N)) - recursion stack
      */
     void mergeSort(int arr[], int l, int r) {
         if (l >= r) {
-            // out of bound or single element (which is sorted by default)
+            /**
+             * out of bounds or single element is 
+             * left which is by default sorted
+             */
             return;
         }
         int mid = l + (r - l) / 2;
         mergeSort(arr, l, mid);
-        mergeSort(arr, mid + 1, r); // Complexity : T(N) = 2 x T(N / 2) + O(N)
+        mergeSort(arr, mid + 1, r);
         mergeSortedArrays(arr, l, mid, r); // TC: O(N), SC: O(N)
     }
     
@@ -24,29 +27,29 @@ class Solution {
      * TC: O(N)
      * SC: O(N)
      */
-    private void mergeSortedArrays(int[] arr, int l, int mid, int r) {
-        List<Integer> temp = new ArrayList<>();
-        int i = l;
+    private void mergeSortedArrays(int[] arr, int low, int mid, int high) {
+        int i = low;
         int j = mid + 1;
-        while (i <= mid && j <= r) { // TC: O(R - L)
-            if (arr[i] > arr[j]) {
-                temp.add(arr[j]);
-                j++;
-            } else {
+        List<Integer> temp = new ArrayList<>();
+        while (i <= mid && j <= high) { // TC: O(N)
+            if (arr[i] <= arr[j]) {
                 temp.add(arr[i]);
                 i++;
+            } else {
+                temp.add(arr[j]);
+                j++;
             }
         }
         while (i <= mid) {
             temp.add(arr[i]);
             i++;
         }
-        while (j <= r) {
+        while (j <= high) {
             temp.add(arr[j]);
             j++;
         }
-        for (int p = l; p <= r; p++) { // TC: O(R - L)
-            arr[p] = temp.get(p - l);
+        for (int p = low; p <= high; p++) {
+            arr[p] = temp.get(p - low);
         }
     }
 }
