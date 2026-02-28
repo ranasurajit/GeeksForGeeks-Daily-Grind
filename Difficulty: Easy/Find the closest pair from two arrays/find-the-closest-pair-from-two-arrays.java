@@ -17,26 +17,19 @@ class Solution {
         while (p < n && q >= 0) { // TC: O(N + M)
             int sum = arr1[p] + arr2[q];
             int diff = Math.abs(sum - x);
-            if (diff == 0) {
+            if (minDiff > diff) {
+                minDiff = diff;
                 pair1 = arr1[p];
                 pair2 = arr2[q];
-                break;
-            } else if (sum < x) {
-                if (minDiff > diff) {
-                    minDiff = diff;
-                    pair1 = arr1[p];
-                    pair2 = arr2[q];
-                }
+            }
+            if (sum < x) {
                 // increment p
                 p++;
-            } else {
+            } else if (sum > x) {
                 // decrement p
-                if (minDiff > diff) {
-                    minDiff = diff;
-                    pair1 = arr1[p];
-                    pair2 = arr2[q];
-                }
                 q--;
+            } else {
+                break;
             }
         }
         result.add(pair1);
