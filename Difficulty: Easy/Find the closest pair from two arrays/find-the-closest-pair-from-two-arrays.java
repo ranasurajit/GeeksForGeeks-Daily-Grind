@@ -16,13 +16,14 @@ class Solution {
         ArrayList<Integer> result = new ArrayList<>();
         while (p < n && q >= 0) { // TC: O(N + M)
             int sum = arr1[p] + arr2[q];
-            if (sum == x) {
+            int diff = Math.abs(sum - x);
+            if (diff == 0) {
                 pair1 = arr1[p];
                 pair2 = arr2[q];
                 break;
             } else if (sum < x) {
-                if (minDiff > Math.abs(sum - x)) {
-                    minDiff = Math.abs(sum - x);
+                if (minDiff > diff) {
+                    minDiff = diff;
                     pair1 = arr1[p];
                     pair2 = arr2[q];
                 }
@@ -30,8 +31,8 @@ class Solution {
                 p++;
             } else {
                 // decrement p
-                if (minDiff > Math.abs(sum - x)) {
-                    minDiff = Math.abs(sum - x);
+                if (minDiff > diff) {
+                    minDiff = diff;
                     pair1 = arr1[p];
                     pair2 = arr2[q];
                 }
