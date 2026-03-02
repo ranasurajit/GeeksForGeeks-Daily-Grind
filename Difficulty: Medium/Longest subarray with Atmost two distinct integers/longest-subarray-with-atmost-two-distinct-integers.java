@@ -29,6 +29,7 @@ class Solution {
                 }
                 i++;
             }
+            // window size is (j - i + 1)
             maxLength = Math.max(maxLength, j - i + 1);
             j++;
         }
