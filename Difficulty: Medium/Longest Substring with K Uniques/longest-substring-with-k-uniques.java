@@ -12,10 +12,10 @@ class Solution {
         Map<Integer, Integer> freqMap = new HashMap<>(); // SC: O(K)
         int maxLength = -1;
         while (j < n) { // TC: O(N)
-            int chIdx = s.charAt(j) - '0';
+            int chIdx = s.charAt(j) - 'a';
             freqMap.put(chIdx, freqMap.getOrDefault(chIdx, 0) + 1);
             while (freqMap.size() > k) {
-                int removeIdx = s.charAt(i) - '0';
+                int removeIdx = s.charAt(i) - 'a';
                 int freq = freqMap.get(removeIdx);
                 if (freq == 1) {
                     freqMap.remove(removeIdx);
