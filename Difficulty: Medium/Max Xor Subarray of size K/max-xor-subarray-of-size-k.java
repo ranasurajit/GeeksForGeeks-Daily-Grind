@@ -14,10 +14,10 @@ class Solution {
         while (j < n) { // TC: O(N)
             currentXOR ^= arr[j];
             if (j - i + 1 == k) {
-                // sliding window size of k is met here
                 maxXOR = Math.max(maxXOR, currentXOR);
                 // remove computation from index 'i'
-                currentXOR ^= arr[i]; // by property of XOR (a ^ a ^ b = b) so arr[i] is negated
+                // from XOR property to cancel affect of arr[i]
+                currentXOR ^= arr[i];
                 // slide to next window
                 i++;
             }
