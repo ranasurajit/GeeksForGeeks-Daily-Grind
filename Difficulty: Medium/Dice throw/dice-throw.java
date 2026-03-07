@@ -1,5 +1,55 @@
 class Solution {
     /**
+     * Approach IV : Using Optimized DP (Space Optimized) Approach
+     * 
+     * TC: O(n x m x t)
+     * SC: O(t) + O(t) ~ O(t)
+     * 
+     * - O(t) - current and next array
+     */
+    static int noOfWays(int m, int n, int x) {
+        int[] next = new int[x + 1];    // SC: O(t)
+        next[0] = 1;
+        for (int i = n - 1; i >= 0; i--) {     // TC: O(n)
+            int[] current = new int[x + 1];    // SC: O(t)
+            for (int j = x; j >= 0; j--) {     // TC: O(x)
+                for (int f = 1; f <= m; f++) { // TC: O(m)
+                    if (f <= j) {
+                        // we can count the dice with index 'idx' if face value <= x
+                        current[j] += next[j - f];
+                    }
+                }
+            }
+            next = current;
+        }
+        return next[x];
+    }
+
+    /**
+     * Approach III : Using Optimal (Tabulation) Approach
+     * 
+     * TC: O(n x m x t)
+     * SC: O(n x t)
+     * 
+     * - O(n x t) - dp array memory
+     */
+    static int noOfWaysTabulation(int m, int n, int x) {
+        int[][] dp = new int[n + 1][x + 1];    // SC: O(n x t)
+        dp[n][0] = 1;
+        for (int i = n - 1; i >= 0; i--) {     // TC: O(n)
+            for (int j = x; j >= 0; j--) {     // TC: O(x)
+                for (int f = 1; f <= m; f++) { // TC: O(m)
+                    if (f <= j) {
+                        // we can count the dice with index 'idx' if face value <= x
+                        dp[i][j] += dp[i + 1][j - f];
+                    }
+                }
+            }
+        }
+        return dp[0][x];
+    }
+
+    /**
      * Approach II : Using Better (Memoization) Approach
      * 
      * TC: O(n x m x t)
@@ -8,7 +58,7 @@ class Solution {
      * - O(n) - recursion stack
      * - O(n x t) - memoization array
      */
-    static int noOfWays(int m, int n, int x) {
+    static int noOfWaysMemoization(int m, int n, int x) {
         int[][] memo = new int[n][x + 1]; // SC: O(n x t)
         for (int[] mem : memo) {
             Arrays.fill(mem, -1);
