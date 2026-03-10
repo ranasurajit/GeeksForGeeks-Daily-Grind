@@ -25,10 +25,10 @@ class Solution {
          * be expanded (to form sub-array) till we find
          * a smaller element
          */
-        int count = 0;
+        long count = 0L;
         for (int i = 0; i < n; i++) { // TC: O(N)
             count += (nse[i] - i);
         }
-        return count;
+        return (int) count;
     }
 }
