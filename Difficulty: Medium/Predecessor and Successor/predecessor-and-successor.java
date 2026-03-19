@@ -10,14 +10,78 @@ class Node {
 */
 
 class Solution {
+    private Node pre = null;
+    private Node suc = null;
+
+    /**
+     * Approach II : Using DFS on BST Approach
+     * 
+     * TC: O(H) ~ O(log(N))
+     * SC: O(H) ~ O(log(N))
+     */
+    public ArrayList<Node> findPreSuc(Node root, int key) {
+        dfsBST(root, key); // TC: O(log(N)), SC: O(log(N))
+        ArrayList<Node> result = new ArrayList<>();
+        result.add(pre);
+        result.add(suc);
+        return result;
+    }
+    
+    /**
+     * Using DFS on BST Approach
+     * 
+     * TC: O(log(N))
+     * SC: O(log(N))
+     */
+    private void dfsBST(Node node, int key) {
+        if (node == null) {
+            return;
+        }
+        if (key > node.data) {
+            pre = node;
+            dfsBST(node.right, key);
+        } else if (key < node.data) {
+            suc = node;
+            dfsBST(node.left, key);
+        } else {
+            /**
+             * in case the key matches with 
+             * node value, we need to compute
+             * both Predecessor and Successor
+             */
+            // candidate for Predecessor
+            Node temp = node.left;
+            while (temp != null) {
+                pre = temp;
+                /**
+                 * compute maximum which
+                 * is present in node's
+                 * right
+                 */
+                temp = temp.right;
+            }
+            // candidate for Successor
+            temp = node.right;
+            while (temp != null) {
+                suc = temp;
+                /**
+                 * compute minimum which
+                 * is present in node's
+                 * left
+                 */
+                temp = temp.left;
+            }
+        }
+    }
+
     /**
      * Approach I : Using DFS (Inorder Traversal) + Binary Search Approach
      * 
      * TC: O(N) + O(2 x log(N)) ~ O(N)
-     * SC: O(H) ~ O(N) in worst case
+     * SC: O(N) + O(H) ~ O(N) in worst case
      */
-    public ArrayList<Node> findPreSuc(Node root, int key) {
-        List<Node> sorted = new ArrayList<>();
+    public ArrayList<Node> findPreSucBruteForce(Node root, int key) {
+        List<Node> sorted = new ArrayList<>(); // SC: O(N)
         /**
          * Inorder traversal of BST is sorted
          */
