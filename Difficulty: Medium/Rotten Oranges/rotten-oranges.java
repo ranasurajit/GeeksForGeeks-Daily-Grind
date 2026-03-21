@@ -31,7 +31,6 @@ class Solution {
                 }
             }
         }
-        int convertedOranges = 0;
         int maxTime = 0;
         while (!queue.isEmpty()) { // TC: O(M x N)
             Pair pair = queue.poll();
@@ -46,16 +45,13 @@ class Solution {
                     continue;
                 }
                 if (!visited[effRow][effCol] && mat[effRow][effCol] == 1) {
-                    convertedOranges++;
+                    freshOranges--;
                     visited[effRow][effCol] = true;
                     queue.offer(new Pair(effRow, effCol, time + 1));
                 }
             }
         }
-        if (convertedOranges != freshOranges) {
-            return -1;
-        }
-        return maxTime;
+        return freshOranges != 0 ? -1 : maxTime;
     }
 }
 
