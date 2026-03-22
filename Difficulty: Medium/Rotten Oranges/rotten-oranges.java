@@ -26,43 +26,47 @@ class Solution {
                     visited[i][j] = true;
                 } else {
                     // rotten oranges
-                    queue.offer(new Pair(i, j, 0));
+                    queue.offer(new Pair(i, j));
                     visited[i][j] = true;
                 }
             }
         }
-        int maxTime = 0;
+        int time = 0;
         while (!queue.isEmpty()) { // TC: O(M x N)
-            Pair pair = queue.poll();
-            int row = pair.row;
-            int col = pair.col;
-            int time = pair.time;
-            maxTime = Math.max(maxTime, time);
-            for (int[] dir : directions) { // TC: O(4)
-                int effRow = row + dir[0];
-                int effCol = col + dir[1];
-                if (effRow < 0 || effRow >= m || effCol < 0 || effCol >= n) {
-                    continue;
-                }
-                if (!visited[effRow][effCol] && mat[effRow][effCol] == 1) {
-                    freshOranges--;
-                    visited[effRow][effCol] = true;
-                    queue.offer(new Pair(effRow, effCol, time + 1));
+            int size = queue.size();
+            boolean hasEntered = false;
+            for (int i = 0; i < size; i++) {
+                Pair pair = queue.poll();
+                int row = pair.row;
+                int col = pair.col;
+                for (int[] dir : directions) { // TC: O(4)
+                    int effRow = row + dir[0];
+                    int effCol = col + dir[1];
+                    if (effRow < 0 || effRow >= m || effCol < 0 || effCol >= n) {
+                        continue;
+                    }
+                    if (!visited[effRow][effCol] && mat[effRow][effCol] == 1) {
+                        freshOranges--;
+                        visited[effRow][effCol] = true;
+                        queue.offer(new Pair(effRow, effCol));
+                        hasEntered = true;
+                    }
                 }
             }
+            if (hasEntered) {
+                time++;
+            }
         }
-        return freshOranges != 0 ? -1 : maxTime;
+        return freshOranges != 0 ? -1 : time;
     }
 }
 
 class Pair {
     int row;
     int col;
-    int time;
     
-    public Pair (int row, int col, int time) {
+    public Pair (int row, int col) {
         this.row = row;
         this.col = col;
-        this.time = time;
     }
 }
