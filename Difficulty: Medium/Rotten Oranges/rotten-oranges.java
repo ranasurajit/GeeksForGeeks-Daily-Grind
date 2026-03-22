@@ -10,7 +10,6 @@ class Solution {
     public int orangesRot(int[][] mat) {
         int m = mat.length;
         int n = mat[0].length;
-        boolean[][] visited = new boolean[m][n]; // SC: O(M x N)
         int freshOranges = 0;
         /**
          * From all cells having rotten oranges
@@ -22,12 +21,9 @@ class Solution {
             for (int j = 0; j < n; j++) { // TC: O(N)
                 if (mat[i][j] == 1) {
                     freshOranges++;
-                } else if (mat[i][j] == 0) {
-                    visited[i][j] = true;
-                } else {
+                } else if (mat[i][j] == 2) {
                     // rotten oranges
                     queue.offer(new Pair(i, j));
-                    visited[i][j] = true;
                 }
             }
         }
@@ -45,9 +41,9 @@ class Solution {
                     if (effRow < 0 || effRow >= m || effCol < 0 || effCol >= n) {
                         continue;
                     }
-                    if (!visited[effRow][effCol] && mat[effRow][effCol] == 1) {
+                    if (mat[effRow][effCol] == 1) {
+                        mat[effRow][effCol] = 2; // marking cell as visited
                         freshOranges--;
-                        visited[effRow][effCol] = true;
                         queue.offer(new Pair(effRow, effCol));
                         hasEntered = true;
                     }
