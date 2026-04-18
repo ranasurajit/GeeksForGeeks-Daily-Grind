@@ -1,13 +1,39 @@
 class Solution {
     /**
-     * Approach : Using Kadane's Algorithm Approach
+     * Approach II : Using Optimal (Kadane's Algorithm) Approach
      * 
-     * TC: O(n) + O(n) + O(n) ~ O(n)
+     * TC: O(n)
      * SC: O(1)
      */
     int maxOnes(int[] arr) {
         int n = arr.length;
         int count1s = 0;
+        int maxSum = 0;
+        int currentSum = 0;
+        for (int i = 0; i < n; i++) { // TC: O(n)
+            if (arr[i] == 1) {
+                count1s++;
+            }
+            int val = arr[i] == 1 ? -1 : 1;
+            currentSum += val;
+            maxSum = Math.max(maxSum, currentSum);
+            if (currentSum < 0) {
+                currentSum = 0;
+            }
+        }
+        return maxSum + count1s;
+    }
+
+    /**
+     * Approach I : Using Brute-Force (Kadane's Algorithm) Approach
+     * 
+     * TC: O(n) + O(n) + O(n) ~ O(n)
+     * SC: O(n)
+     */
+    int maxOnesBruteForce(int[] arr) {
+        int n = arr.length;
+        int count1s = 0;
+        int[] transform = new int[n]; // SC: O(n)
         for (int i = 0; i < n; i++) { // TC: O(n)
             if (arr[i] == 1) {
                 count1s++;
@@ -20,9 +46,9 @@ class Solution {
          */
         for (int i = 0; i < n; i++) { // TC: O(n)
             if (arr[i] == 1) {
-                arr[i] = -1;
+                transform[i] = -1;
             } else {
-                arr[i] = 1;
+                transform[i] = 1;
             }
         }
         /**
@@ -32,7 +58,7 @@ class Solution {
         int maxSum = 0;
         int currentSum = 0;
         for (int i = 0; i < n; i++) { // TC: O(n)
-            currentSum += arr[i];
+            currentSum += transform[i];
             maxSum = Math.max(maxSum, currentSum);
             if (currentSum < 0) {
                 currentSum = 0;
