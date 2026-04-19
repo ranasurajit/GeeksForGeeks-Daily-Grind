@@ -12,8 +12,7 @@ class Solution {
             return false;
         }
         while (y != 1) {
-            int rem = y % x;
-            if (rem != 0) {
+            if (y % x != 0) {
                 return false;
             }
             y = y / x;
