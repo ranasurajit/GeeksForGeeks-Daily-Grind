@@ -1,13 +1,33 @@
 class Solution {
     /**
-     * Approach : Using Recursion Approach
+     * Approach II : Using Two Pointers Approach
+     * 
+     * TC : O(n)
+     * SC : O(1)
+     */
+    boolean isPalindrome(String s) {
+        int n = s.length();
+        int i = 0;
+        int j = n - 1;
+        while (i < j) { // TC : O(n)
+            if (s.charAt(i) != s.charAt(j)) {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    /**
+     * Approach I : Using Recursion Approach
      * 
      * TC : O(n)
      * SC : O(n)
      * 
      * O(n) - recursion call stack
      */
-    boolean isPalindrome(String s) {
+    boolean isPalindromeRecursion(String s) {
         int n = s.length();
         return solveRecursion(s, 0, n - 1);
     }
