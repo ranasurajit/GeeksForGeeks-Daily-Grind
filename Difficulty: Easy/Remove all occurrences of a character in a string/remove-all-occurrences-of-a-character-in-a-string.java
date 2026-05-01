@@ -2,6 +2,27 @@
 class Solution {
     // Function to remove all occurrences of the character from the string
     /**
+     * Approach III : Using Iterative Approach
+     * 
+     * TC : O(n)
+     * SC : O(n)
+     * 
+     * - O(n) - forming the String result
+     */
+    public void removeCharacter(StringBuilder s, char c) {
+        int n = s.length();
+        StringBuilder sb = new StringBuilder(); // SC : O(n)
+        for (int i = 0; i < n; i++) { // TC : O(n)
+            char ch = s.charAt(i);
+            if (ch != c) {
+                sb.append(ch);
+            }
+        }
+        s.setLength(0);
+        s.append(sb);
+    }
+
+    /**
      * Approach II : Using Optimal Recursion Approach
      * 
      * TC : O(n)
@@ -10,7 +31,7 @@ class Solution {
      * - O(n) - forming the String result
      * - O(n) - recursion stack
      */
-    public void removeCharacter(StringBuilder s, char c) {
+    public void removeCharacterOptimalRecursion(StringBuilder s, char c) {
         StringBuilder sb = new StringBuilder(); // SC : O(n)
         solveRecursion(0, s, c, sb);
         s.setLength(0);
