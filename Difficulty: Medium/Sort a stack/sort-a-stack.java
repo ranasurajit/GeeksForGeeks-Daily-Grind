@@ -1,6 +1,6 @@
 class Solution {
     /**
-     * Approach : Using Recursion Approach
+     * Approach I : Using Recursion + Iteration Approach
      * 
      * TC : O(n²)
      * SC : O(n) 
