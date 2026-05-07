@@ -1,59 +1,72 @@
 class Solution {
-    private static final int[][] directions = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
-    private static final char[] dirMarker = { 'D', 'U', 'R', 'L' };
-    private int m;
     private int n;
-
-    /**
-     * Approach : Using Recursion + Backtracking Approach
-     * 
-     * TC: O(4 ^ (M x N)) + O(K x log(K)) ~ O(4 ^ (M x N))
-     * SC: O(M x N)
-     * 
-     * where K is the number of paths
-     */
-    public ArrayList<String> ratInMaze(int[][] maze) {
-        this.m = maze.length;
-        this.n = maze[0].length;
-        ArrayList<String> result = new ArrayList<String>();
-        if (maze[0][0] == 0) {
-            return result;
-        }
-        solveRecursion(0, 0, new StringBuilder(), maze, result);
-        Collections.sort(result, (a, b) -> a.compareTo(b)); // TC: O(K x log(K))
-        return result;
-    }
+    private boolean[][] visited;
     
     /**
-     * Using Recursion + Backtracking Approach
+     * Approach : Using Backtracking Approach
      * 
-     * TC: O(4 ^ (M x N))
-     * SC: O(M x N)
+     * TC : O(4 ^ (n x n))
+     * SC : O(n x n)
      */
-    private void solveRecursion(int r, int c, StringBuilder sb, int[][] maze, 
-        ArrayList<String> result) {
-        // Base Case
-        if (maze[r][c] == 2) {
-            return;
+    public ArrayList<String> ratInMaze(int[][] maze) {
+        this.n = maze.length;
+        if (maze[0][0] == 0 || maze[n - 1][n - 1] == 0) {
+            // rat cannot travel through
+            return new ArrayList<>();
         }
-        if (r == m - 1 && c == n - 1) {
+        this.visited = new boolean[n][n];
+        ArrayList<String> result = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        visited[0][0] = true;
+        solve(0, 0, n, maze, sb, result);
+        return result;
+    }
+
+    /**
+     * Using Backtracking Approach
+     * 
+     * TC : O(4 ^ (n x n))
+     * SC : O(n x n)
+     */
+    private void solve(int i, int j, int n, int[][] maze,
+        StringBuilder sb, ArrayList<String> result) {
+        // Base Case
+        if (i == n - 1 && j == n - 1) {
             result.add(sb.toString());
             return;
         }
         // Recursion Calls
-        for (int i = 0; i < directions.length; i++) { // TC: O(4)
-            int effRow = r + directions[i][0];
-            int effCol = c + directions[i][1];
-            if (effRow >= 0 && effRow < m && effCol >= 0 && effCol < n && 
-            maze[effRow][effCol] == 1) {
-                int temp = maze[r][c];
-                sb.append(dirMarker[i]);
-                maze[r][c] = 2;
-                solveRecursion(effRow, effCol, sb, maze, result); // explore
-                // backtrack
-                sb.setLength(sb.length() - 1);
-                maze[r][c] = temp;
-            }
+        // down movement
+        if (i + 1 < n && j < n && !visited[i + 1][j] && maze[i + 1][j] == 1) {
+            visited[i + 1][j] = true;      // modify
+            sb.append('D');                // modify
+            solve(i + 1, j, n, maze, sb, result); // explore
+            visited[i + 1][j] = false;     // backtrack
+            sb.setLength(sb.length() - 1); // backtrack
+        }
+        // left movement
+        if (i < n && j - 1 >= 0 && !visited[i][j - 1] && maze[i][j - 1] == 1) {
+            visited[i][j - 1] = true;      // modify
+            sb.append('L');                // modify
+            solve(i, j - 1, n, maze, sb, result); // explore
+            visited[i][j - 1] = false;     // backtrack
+            sb.setLength(sb.length() - 1); // backtrack
+        }
+        // right movement
+        if (i < n && j + 1 < n && !visited[i][j + 1] && maze[i][j + 1] == 1) {
+            visited[i][j + 1] = true;      // modify
+            sb.append('R');                // modify
+            solve(i, j + 1, n, maze, sb, result); // explore
+            visited[i][j + 1] = false;     // backtrack
+            sb.setLength(sb.length() - 1); // backtrack
+        }
+        // up movement
+        if (i - 1 >= 0 && j < n && !visited[i - 1][j] && maze[i - 1][j] == 1) {
+            visited[i - 1][j] = true;      // modify
+            sb.append('U');                // modify
+            solve(i - 1, j, n, maze, sb, result); // explore
+            visited[i - 1][j] = false;     // backtrack
+            sb.setLength(sb.length() - 1); // backtrack
         }
     }
 }
