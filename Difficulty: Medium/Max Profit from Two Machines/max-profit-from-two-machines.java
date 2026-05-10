@@ -1,11 +1,54 @@
 class Solution {
     /**
-     * Approach : Using Greedy + Sorting Approach
+     * Approach II : Using Greedy + Sorting Approach
+     * 
+     * TC : O(n) + O(n x log(n)) + O(n) ~ O(n x log(n))
+     * SC : O(n)
+     */
+    public int maxProfit(int x, int y, int[] a, int[] b) {
+        int n = a.length;
+        /**
+         * We will try to greedily assign the tasks based
+         * upon the maximum profit based upon the difference
+         * between a[i] - b[i]
+         */
+        Integer[] indices = new Integer[n]; // SC : O(n)
+        for (int i = 0; i < n; i++) { // TC : O(n)
+            indices[i] = i;
+        }
+        Arrays.sort(indices, (i, j) -> {
+            return Math.abs(a[j] - b[j]) - Math.abs(a[i] - b[i]);
+        });                           // TC : O(n x log(n))
+        int maxProfit = 0;
+        for (int idx : indices) {     // TC : O(n)
+            if (a[idx] > b[idx]) {
+                if (x > 0) {
+                    maxProfit += a[idx];
+                    x--;
+                } else if (y > 0) {
+                    maxProfit += b[idx];
+                    y--;
+                }
+            } else {
+                if (y > 0) {
+                    maxProfit += b[idx];
+                    y--;
+                } else if (x > 0) {
+                    maxProfit += a[idx];
+                    x--;
+                }
+            }
+        }
+        return maxProfit;
+    }
+
+    /**
+     * Approach I : Using Greedy + Sorting Approach
      * 
      * TC : O(n) + O(n x log(n)) + O(n) ~ O(n x log(n))
      * SC : O(3 x n) ~ O(n)
      */
-    public int maxProfit(int x, int y, int[] a, int[] b) {
+    public int maxProfitGreedy(int x, int y, int[] a, int[] b) {
         int n = a.length;
         /**
          * We will try to greedily assign the tasks based
