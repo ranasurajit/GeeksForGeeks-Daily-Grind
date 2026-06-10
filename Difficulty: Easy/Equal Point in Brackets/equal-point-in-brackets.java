@@ -1,11 +1,43 @@
 class Solution {
     /**
-     * Approach : Using Prefix-Suffix Array Approach
+     * Approach II : Using Optimal (Prefix-Suffix Array Without Extra Space) Approach
      * 
      * TC : O(n) + O(n) ~ O(n)
-     * SC : O(n)
+     * SC : O(1)
      */
     public int findIndex(String s) {
+        int n = s.length();
+        int totalClose = 0;
+        for (int i = 0; i < n; i++) { // TC : O(n)
+            if (s.charAt(i) == ')') {
+               totalClose++;
+            }
+        }
+        int open = 0;
+        int close = totalClose;
+        for (int i = 0; i <= n; i++) { // TC : O(n)
+            // index 'i' is the split position
+            if (open == close) {
+                return i;
+            }
+            if (i < n) {
+                if (s.charAt(i) == '(') {
+                    open++;
+                } else {
+                    close--;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Approach I : Using Brute-Force (Prefix-Suffix Array With Extra Space) Approach
+     * 
+     * TC : O(n) + O(n) + O(n) + O(n) ~ O(n)
+     * SC : O(n) + O(n) ~ O(n)
+     */
+    public int findIndexBruteForce(String s) {
         int n = s.length();
         int[] opened = new int[n]; // SC : O(n)
         opened[0] = s.charAt(0) == '(' ? 1 : 0;
