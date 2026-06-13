@@ -23,11 +23,8 @@ class Solution {
         this.m = mat[0].length;
         List<int[]> result = new ArrayList<>();
         solveDFS(0, 0, mat, 0, result);
-        List<Integer> answer = new ArrayList<>();
         int[] first = result.get(0);
-        answer.add(first[0]);
-        answer.add(first[1]);
-        return answer;
+        return Arrays.asList(first[0], first[1]);
     }
     
     /**
