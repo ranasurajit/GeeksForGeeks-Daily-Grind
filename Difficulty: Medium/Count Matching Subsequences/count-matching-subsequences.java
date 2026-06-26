@@ -2,6 +2,37 @@ class Solution {
     private static final int MOD = (int) 1e9 + 7;
 
     /**
+     * Approach III : Using Tabulation (Bottom-Up) Approach
+     * 
+     * TC : O(m x n)
+     * SC : O(m x n)
+     *  - O(m x n) - dp array memory
+     * 
+     * Accepted (1117 /1117 testcases passed)
+     */
+    public static int countWays(String s1, String s2) {
+        int m = s1.length();
+        int n = s2.length();
+        // Initialization
+        long[][] dp = new long[m + 1][n + 1]; // SC : O(m x n)
+        for (int i = 0; i <= m; i++) {
+            dp[i][n] = 1L;
+        }
+        // Iterative Calls
+        for (int i = m - 1; i >= 0; i--) {     // TC : O(m)
+            for (int j = n - 1; j >= 0; j--) { // TC : O(n)
+                long skip = (dp[i + 1][j]) % MOD;
+                long pick = 0L;
+                if (s1.charAt(i) == s2.charAt(j)) {
+                    pick = (dp[i + 1][j + 1]) % MOD;
+                }
+                dp[i][j] = (pick + skip) % MOD;
+            }
+        }
+        return (int) (dp[0][0] % MOD);
+    }
+
+    /**
      * Approach II : Using Memoization (Top-Down) Approach
      * 
      * TC : O(m x n)
@@ -11,7 +42,7 @@ class Solution {
      * 
      * Accepted (1117 /1117 testcases passed)
      */
-    public static int countWays(String s1, String s2) {
+    public static int countWaysMemoization(String s1, String s2) {
         int m = s1.length();
         int n = s2.length();
         long[][] memo = new long[m][n]; // SC : O(m x n)
