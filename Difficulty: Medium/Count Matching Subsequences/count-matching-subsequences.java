@@ -2,6 +2,40 @@ class Solution {
     private static final int MOD = (int) 1e9 + 7;
 
     /**
+     * Approach IV : Using Space-Optimization (Optimized DP) Approach
+     * 
+     * TC : O(m x n)
+     * SC : O(n) + O(n) ~ O(n)
+     *  - O(n) - 'next' and 'current' array memory
+     * 
+     * Accepted (1117 /1117 testcases passed)
+     */
+    public static int countWays(String s1, String s2) {
+        int m = s1.length();
+        int n = s2.length();
+        // Initialization
+        long[] next = new long[n + 1]; // SC : O(n)
+        long[] current = new long[n + 1]; // SC : O(n)
+        for (int i = 0; i <= m; i++) {
+            next[n] = 1L;
+            current[n] = 1L;
+        }
+        // Iterative Calls
+        for (int i = m - 1; i >= 0; i--) {     // TC : O(m)
+            for (int j = n - 1; j >= 0; j--) { // TC : O(n)
+                long skip = (next[j]) % MOD;
+                long pick = 0L;
+                if (s1.charAt(i) == s2.charAt(j)) {
+                    pick = (next[j + 1]) % MOD;
+                }
+                current[j] = (pick + skip) % MOD;
+            }
+            next = current.clone();
+        }
+        return (int) (next[0] % MOD);
+    }
+
+    /**
      * Approach III : Using Tabulation (Bottom-Up) Approach
      * 
      * TC : O(m x n)
@@ -10,7 +44,7 @@ class Solution {
      * 
      * Accepted (1117 /1117 testcases passed)
      */
-    public static int countWays(String s1, String s2) {
+    public static int countWaysTabulation(String s1, String s2) {
         int m = s1.length();
         int n = s2.length();
         // Initialization
