@@ -3,61 +3,40 @@ class Solution {
     private long[] segTree;
 
     /**
-     * Approach : Using Segment Tree Range Query Update Approach
+     * Approach : Using Segment Tree Approach
      * 
-     * TC : O(n) + O(q x log(n)) ~ O(n + q x log(n)) 
-     * SC : O(n) + O(n) + O(q x log(n)) ~ O(n + q x log(n)) 
+     * TC : O(n) + O(q x log(n)) ~ O(n + q x log(n))
+     * SC : O(n) + O(log(n)) + O(log(n)) ~ O(n)
      */
     public ArrayList<Long> RangeLCMQuery(int[] arr, int[][] queries) {
-        int n = arr.length;
+        this.n = arr.length;
+        this.segTree = new long[4 * n]; // SC : O(4 x n) ~ O(n)
+        buildSegmentTree(0, 0, n - 1, arr); // TC : O(n), SC : O(log(n))
         ArrayList<Long> result = new ArrayList<>();
-        segTree = new long[4 * n]; // SC : O(4 x n) ~ O(n)
-        buildSegmentTree(arr, 0, 0, n - 1); // TC : O(n), SC : O(n)
         for (int[] query : queries) { // TC : O(q)
             int type = query[0];
             if (type == 1) {
-                // update query on Segment Tree
                 int index = query[1];
-                int value = query[2];
-                updateSegmentTree(index, value, 0, 0, n - 1); // TC : O(log(n))
+                int val = query[2];
+                updateSegmentTree(0, 0, n - 1, index, val); // TC : O(log(n)), SC : O(log(n))
             } else {
-                // range query on Segment Tree
                 int start = query[1];
                 int end = query[2];
-                long queryResult = 
-                    querySegmentTree(0, 0, n - 1, start, end); // TC : O(log(n))
-                result.add(queryResult);
+                long value = 
+                    querySegmentTree(0, 0, n - 1, start, end); // TC : O(log(n)), SC : O(log(n))
+                result.add(value);
             }
         }
         return result;
     }
     
     /**
-     * Using Segment Tree Build Approach
-     * 
-     * TC : O(n)
-     * SC : O(log(n))
-     */
-    private void buildSegmentTree(int[] arr, int idx, int l, int r) {
-        // Base Case
-        if (l == r) {
-            segTree[idx] = arr[l];
-            return;
-        }
-        // Recursion Calls
-        int mid = l + (r - l) / 2;
-        buildSegmentTree(arr, 2 * idx + 1, l, mid);     // left
-        buildSegmentTree(arr, 2 * idx + 2, mid + 1, r); // right
-        segTree[idx] = getLCM(segTree[2 * idx + 1], segTree[2 *idx + 2]);
-    }
-    
-    /**
-     * Using Segment Tree Update Approach
+     * Using Segment Tree Approach
      * 
      * TC : O(log(n))
      * SC : O(log(n))
      */
-    private void updateSegmentTree(int index, int value, int idx, int l, int r) {
+    private void updateSegmentTree(int idx, int l, int r, int index, int value) {
         // Base Case
         if (l == r) {
             segTree[idx] = value;
@@ -66,37 +45,54 @@ class Solution {
         // Recursion Calls
         int mid = l + (r - l) / 2;
         if (index <= mid) {
-            // we need to update in the left sub-tree of Segment Tree
-            updateSegmentTree(index, value, 2 * idx + 1, l, mid);
+            updateSegmentTree(2 * idx + 1, l, mid, index, value);
         } else {
-            // we need to update in the right sub-tree of Segment Tree
-            updateSegmentTree(index, value, 2 * idx + 2, mid + 1, r);
+            updateSegmentTree(2 * idx + 2, mid + 1, r, index, value);
         }
         segTree[idx] = getLCM(segTree[2 * idx + 1], segTree[2 * idx + 2]);
     }
     
     /**
-     * Using Segment Tree Query Approach
+     * Using Segment Tree Approach
      * 
      * TC : O(log(n))
      * SC : O(log(n))
      */
     private long querySegmentTree(int idx, int l, int r, int start, int end) {
         // Base Case
-        // no overlap
+        // Case 1 : No Overlap
         if (end < l || start > r) {
             return 1L;
         }
-        // full overlap
-        if (start <= l && end >= r) {
+        // Case 2 : Full Overlap
+        if (l >= start && r <= end) {
             return segTree[idx];
         }
         // Recursion Calls
+        // Case 3 : Partial Overlap
         int mid = l + (r - l) / 2;
-        return getLCM(
-            querySegmentTree(2 * idx + 1, l, mid, start, end),
-            querySegmentTree(2 * idx + 2, mid + 1, r, start, end)
-        );
+        long left = querySegmentTree(2 * idx + 1, l, mid, start, end);
+        long right = querySegmentTree(2 * idx + 2, mid + 1, r, start, end);
+        return getLCM(left, right);
+    }
+    
+    /**
+     * Using Segment Tree Approach
+     * 
+     * TC : O(n) + O(log(n))
+     * SC : O(log(n)) + O(log(n)) ~ O(log(n))
+     */
+    private void buildSegmentTree(int idx, int l, int r, int[] arr) {
+        // Base Case
+        if (l == r) {
+            segTree[idx] = (long) arr[l];
+            return;
+        }
+        // Recursion Calls
+        int mid = l + (r - l) / 2;
+        buildSegmentTree(2 * idx + 1, l, mid, arr);
+        buildSegmentTree(2 * idx + 2, mid + 1, r, arr);
+        segTree[idx] = getLCM(segTree[2 * idx + 1], segTree[2 * idx + 2]);
     }
 
     /**
@@ -106,7 +102,9 @@ class Solution {
      * SC : O(log(Min(a, b)))
      */
     private long getLCM(long a, long b) {
-        return (a / gcd(a, b)) * b;
+        long prod = a * b;
+        long gcd = computeGCD(a, b); // TC : O(log(Min(a, b))), SC : O(log(Min(a, b)))
+        return prod / gcd;
     }
     
     /**
@@ -115,12 +113,13 @@ class Solution {
      * TC : O(log(Min(a, b)))
      * SC : O(log(Min(a, b)))
      */
-    private long gcd(long a, long b) {
-        // Base Case
+    private long computeGCD(long a, long b) {
         if (b == 0) {
             return a;
         }
-        // Recursion Calls
-        return gcd(b, a % b);
+        if (b > a) {
+            return computeGCD(b, a);
+        }
+        return computeGCD(b, a % b);
     }
 }
