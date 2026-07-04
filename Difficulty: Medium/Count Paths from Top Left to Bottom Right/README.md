@@ -1,0 +1,10 @@
+<h2><a href="https://www.geeksforgeeks.org/problems/number-of-paths0926/1">Count Paths from Top Left to Bottom Right</a></h2><h3>Difficulty Level : Difficulty: Medium</h3><hr><div class="problems_problem_content__Xm_eO" style="--text-color: var(--problem-text-color);"><p><span style="font-size: 18.6667px;">Given two integers <strong>m</strong> and <strong>n</strong> representing the number of rows and columns of a grid, respectively, find the number of distinct paths from the top-left cell (0, 0) to the bottom-right cell (m - 1, n - 1). From any cell, you can move only right or down.</span></p>
+<p><span style="font-size: 14pt;"><strong>Note:</strong> The answer is guaranteed to fit within a 32-bit integer.</span></p>
+<p><span style="font-size: 18px;"><strong>Examples:</strong></span></p>
+<pre><span style="font-size: 18px;"><strong>Input</strong>: m = 2, n = 3
+<strong>Output</strong>: 3
+<strong>Explanation</strong>: There are three distinct paths from the top-left cell to the bottom-right cell.<br><img src="https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/929560/Web/Other/blobid1_1781176087.png" height="100"> </span></pre>
+<pre><span style="font-size: 18px;"><strong>Input</strong>: m = 1, n = 4
+<strong>Output:</strong> 1
+<strong>Explanation</strong>: There is only one possible path from the top-left cell to the bottom-right cell.<br><img src="https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/929560/Web/Other/blobid2_1781176100.png" height="100"><br></span></pre>
+<p><span style="font-size: 18px;"><strong>Constraints:</strong></span><br><span style="font-size: 18px;">1 ≤ m ≤ 100<br>1 ≤ n ≤&nbsp;100</span></p></div><p><span style=font-size:18px><strong>Company Tags : </strong><br><code>Zoho</code>&nbsp;<code>Amazon</code>&nbsp;<code>Microsoft</code>&nbsp;<code>NPCI</code>&nbsp;<code>Walmart</code>&nbsp;<code>Cisco</code>&nbsp;<code>Adobe</code>&nbsp;<code>Paytm</code>&nbsp;<code>Linkedin</code>&nbsp;<code>Ola Cabs</code>&nbsp;<br><p><span style=font-size:18px><strong>Topic Tags : </strong><br><code>Algorithms</code>&nbsp;<code>Dynamic Programming</code>&nbsp;
