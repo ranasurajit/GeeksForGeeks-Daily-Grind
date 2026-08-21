@@ -1,8 +1,14 @@
 class Solution {
+    /**
+     * Approach : Using Hashing + Two Pointers Approach
+     * 
+     * TC : O(n) + O(m) + O(Min(n, m)) ~ O(Max(n, m)) ~ O(n)
+     * SC : O(1)
+     */
     int transform(String s1, String s2) {
         int n = s1.length();
         int m = s2.length();
-        Map<Character, Integer> freq = new HashMap<>();
+        Map<Character, Integer> freq = new HashMap<>(); // 
         for (int i = 0; i < n; i++) { // TC : O(n)
             char ch = s1.charAt(i);
             freq.put(ch, freq.getOrDefault(ch, 0) + 1);
