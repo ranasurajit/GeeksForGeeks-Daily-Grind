@@ -12,21 +12,56 @@
 */
 
 class Solution {
-    private ArrayList<Integer> sorted; // SC : O(n)
+    private Node prev = null;
+    private int minDiff = Integer.MAX_VALUE;
 
     /**
-     * Approach : Using DFS (Pre-Order Traversal) Approach
+     * Approach II : Using DFS Approach
      * 
-     * TC : O(n) + O(n) ~ O(n)
-     * SC : O(h) + O(n) ~ O(n)
+     * TC : O(n)
+     * SC : O(h) ~ O(n)
      */
     public int absDiff(Node root) {
-        sorted = new ArrayList<>();
         /**
          * the In-Order Traversal of
          * BST returns a sorted array
          */
-        dfsTree(root); // TC : O(n), SC : O(h)
+        dfsOptTree(root); // TC : O(n), SC : O(h)
+        return minDiff;
+    }
+    
+    /**
+     * Using DFS (In-Order Traversal) Approach
+     * 
+     * TC : O(n)
+     * SC : O(h)
+     */
+    private void dfsOptTree(Node node) {
+        if (node == null) {
+            return;
+        }
+        dfsOptTree(node.left);
+        if (prev != null) {
+            minDiff = Math.min(minDiff,
+                Math.abs(node.data - prev.data));
+        }
+        prev = node;
+        dfsOptTree(node.right);
+    }
+
+    /**
+     * Approach I : Using DFS (In-Order Traversal) Approach
+     * 
+     * TC : O(n) + O(n) ~ O(n)
+     * SC : O(h) + O(n) ~ O(n)
+     */
+    public int absDiffDFSInOrderTraversal(Node root) {
+        ArrayList<Integer> sorted = new ArrayList<>(); // SC : O(n)
+        /**
+         * the In-Order Traversal of
+         * BST returns a sorted array
+         */
+        dfsTree(root, sorted); // TC : O(n), SC : O(h)
         int minDiff = Integer.MAX_VALUE;
         for (int i = 1; i < sorted.size(); i++) { // TC : O(n)
             minDiff = Math.min(minDiff, sorted.get(i) - sorted.get(i - 1));
@@ -35,17 +70,17 @@ class Solution {
     }
     
     /**
-     * Using DFS (Pre-Order Traversal) Approach
+     * Using DFS (In-Order Traversal) Approach
      * 
      * TC : O(n)
      * SC : O(h)
      */
-    private void dfsTree(Node node) {
+    private void dfsTree(Node node, ArrayList<Integer> sorted) {
         if (node == null) {
             return;
         }
-        dfsTree(node.left);
+        dfsTree(node.left, sorted);
         sorted.add(node.data);
-        dfsTree(node.right);
+        dfsTree(node.right, sorted);
     }
 }
